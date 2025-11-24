@@ -2,7 +2,7 @@
 name: "Build"
 permissions:
   actions: write
-  contents: write
+  contents: read
 
 on:
   push:
