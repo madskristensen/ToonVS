@@ -1,0 +1,187 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "TOON",
+  "scopeName": "source.toon",
+  "fileTypes": [ "toon" ],
+  "patterns": [
+    { "include": "#array-header" },
+    { "include": "#list-item" },
+    { "include": "#key-value" },
+    { "include": "#string-quoted" },
+    { "include": "#boolean-null" },
+    { "include": "#number" },
+    { "include": "#delimiter" },
+    { "include": "#identifier" }
+  ],
+  "repository": {
+    "array-header": {
+      "patterns": [
+        {
+          "name": "meta.array.header.toon",
+          "match": "^(\\s*)([A-Za-z_][A-Za-z0-9_]*)(\\s*\\[\\s*\\d+\\s*\\])(\\s*(\\{[^}]*\\}))?\\s*:(\\s*)$",
+          "captures": {
+            "1": { "name": "punctuation.whitespace.leading.toon" },
+            "2": { "name": "entity.name.section.array.toon" },
+            "3": { "name": "constant.numeric.count.toon" },
+            "4": { "name": "meta.field-list.toon" },
+            "5": { "name": "meta.field-list.braces.toon" },
+            "6": { "name": "punctuation.separator.key-value.toon" }
+          }
+        },
+        {
+          "name": "meta.array.header.inline.toon",
+          "match": "^(\\s*)([A-Za-z_][A-Za-z0-9_]*)(\\s*\\[\\s*\\d+\\s*\\])(\\s*(\\{[^}]*\\}))?\\s*:(\\s*)(.+)$",
+          "captures": {
+            "1": { "name": "punctuation.whitespace.leading.toon" },
+            "2": { "name": "entity.name.section.array.toon" },
+            "3": { "name": "constant.numeric.count.toon" },
+            "4": { "name": "meta.field-list.toon" },
+            "5": { "name": "meta.field-list.braces.toon" },
+            "6": { "name": "punctuation.separator.key-value.toon" },
+            "7": { "name": "meta.inline-row.toon" }
+          }
+        }
+      ]
+    },
+
+    "list-item": {
+      "patterns": [
+        {
+          "name": "meta.sequence.item.toon",
+          "match": "^(\\s*)(-)(\\s+)(?=\\S)",
+          "captures": {
+            "1": { "name": "punctuation.whitespace.leading.toon" },
+            "2": { "name": "punctuation.definition.list.toon" },
+            "3": { "name": "punctuation.separator.list.toon" }
+          }
+        }
+      ]
+    },
+
+    "key-value": {
+      "patterns": [
+        {
+          "name": "meta.key-value.toon",
+          "match": "^(\\s*)([A-Za-z_][A-Za-z0-9_]*)(\\s*):(\\s*)(.*)$",
+          "captures": {
+            "1": { "name": "punctuation.whitespace.leading.toon" },
+            "2": { "name": "entity.name.key.toon" },
+            "3": { "name": "punctuation.separator.key.toon" },
+            "4": { "name": "punctuation.separator.key-value.toon" },
+            "5": { "name": "meta.value.toon" }
+          }
+        }
+      ]
+    },
+
+    "string-quoted": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.toon",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.toon" }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.toon" }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.toon",
+              "match": "\\\\(?:\\\\|\"|n|r|t)"
+            },
+            {
+              "name": "invalid.illegal.escape.toon",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.toon",
+          "begin": "'",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.toon" }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.toon" }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.toon",
+              "match": "\\\\(?:\\\\|'|n|r|t)"
+            },
+            {
+              "name": "invalid.illegal.escape.toon",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+
+    "boolean-null": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.toon",
+          "match": "\\b(?:true|false)\\b"
+        },
+        {
+          "name": "constant.language.null.toon",
+          "match": "\\bnull\\b"
+        }
+      ]
+    },
+
+    "number": {
+      "patterns": [
+        {
+          "name": "constant.numeric.toon",
+          "match": "\\b-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\\b"
+        }
+      ]
+    },
+
+    "delimiter": {
+      "patterns": [
+        {
+          "name": "punctuation.separator.delimiter.toon",
+          "match": ","
+        },
+        {
+          "name": "punctuation.separator.pipe.toon",
+          "match": "\\|"
+        },
+        {
+          "name": "punctuation.separator.tab.toon",
+          "match": "\\t"
+        },
+        {
+          "name": "punctuation.section.braces.toon",
+          "match": "[{}]"
+        },
+        {
+          "name": "punctuation.section.brackets.toon",
+          "match": "[\\[\\]]"
+        },
+        {
+          "name": "punctuation.separator.colon.toon",
+          "match": ":"
+        }
+      ]
+    },
+
+    "identifier": {
+      "patterns": [
+        {
+          "name": "variable.other.identifier.toon",
+          "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+        }
+      ]
+    }
+  },
+
+  "foldingStartMarker": "^(\\s*[A-Za-z_][A-Za-z0-9_]*\\s*\\[\\s*\\d+\\s*\\]\\s*:\\s*$|\\s*-\\s+.*$)",
+  "foldingStopMarker": "^\\s*$"
+}

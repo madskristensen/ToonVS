@@ -1,0 +1,8 @@
+[$RootKey$\TextMate\Repositories]
+"TOON"="$PackageFolder$\Grammars"
+
+[$RootKey$\ShellFileAssociations\.toon]
+"DefaultIconMoniker"="KnownMonikers.Script"
+
+[$RootKey$\TextMate\LanguageConfiguration\GrammarMapping]
+"source.toon"="$PackageFolder$\Grammars\Toon\Syntaxes\language-configuration.json"
