@@ -4,7 +4,6 @@ permissions:
   actions: write
   contents: write
 
-
 on:
   push:
     branches: [master]
