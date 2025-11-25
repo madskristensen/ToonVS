@@ -4,7 +4,7 @@
     <Platform Name="arm64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="src/ToonVS.csproj" Id="8c44bb92-b289-4018-9b5b-37ff3c3817fa">
+  <Project Path="src/ToonVS.csproj" Id="8c6290f3-edbd-4cef-b255-db04577141e1">
     <Platform Solution="*|arm64" Project="arm64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>

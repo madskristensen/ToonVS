@@ -38,7 +38,7 @@ jobs:
       uses: timheuer/vsix-version-stamp@v2
       with:
         manifest-file: ${{ env.VsixManifestPath }}
-        #vsix-token-source-file: ${{ env.VsixManifestSourcePath }}
+        vsix-token-source-file: ${{ env.VsixManifestSourcePath }}
 
     - name: Build
       run: msbuild /v:m -restore /p:OutDir=\_built
