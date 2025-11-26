@@ -2,7 +2,7 @@
 [vsixgallery]: http://vsixgallery.com/extension/ToonVS.a857d5f5-e2b1-485e-932b-893dbfaf3661/
 [repo]:https://github.com/madskristensen/ToonVS
 
-# Toon 2 for Visual Studio
+# Toon for Visual Studio
 
 [![Build](https://github.com/madskristensen/ToonVS/actions/workflows/build.yaml/badge.svg)](https://github.com/madskristensen/ToonVS/actions/workflows/build.yaml)
 ![GitHub Sponsors](https://img.shields.io/github/sponsors/madskristensen)

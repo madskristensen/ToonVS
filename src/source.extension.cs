@@ -9,12 +9,12 @@ namespace ToonVS
     internal sealed partial class Vsix
     {
         public const string Id = "ToonVS.a857d5f5-e2b1-485e-932b-893dbfaf3661";
-        public const string Name = "Toon 2";
-        public const string Description = @"Syntax highlighting for .toon files written according to the official specification";
+        public const string Name = "Toon";
+        public const string Description = @"A Visual Studio extension that provides comprehensive support for .toon files, including syntax highlighting, error detection, and code generation from JSON files.";
         public const string Language = "en-US";
         public const string Version = "1.0.905";
         public const string Author = "Mads Kristensen";
-        public const string Tags = "";
+        public const string Tags = "toon, json, jsonc, copilot, ai, tokens";
         public const bool IsPreview = false;
     }
 }
