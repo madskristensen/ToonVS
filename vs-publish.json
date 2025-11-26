@@ -6,7 +6,10 @@
     "tags": [ "toon", "AI", "copilot" ]
   },
   "assetFiles": [
-    
+    {
+      "pathOnDisk": "art/colorizer.png",
+      "targetPath": "art/colorizer.png"
+    }
   ],
   "overview": "README.md",
   "publisher": "MadsKristensen",
