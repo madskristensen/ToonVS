@@ -9,6 +9,18 @@
     {
       "pathOnDisk": "art/colorizer.png",
       "targetPath": "art/colorizer.png"
+    },
+    {
+      "pathOnDisk": "art/error.png",
+      "targetPath": "art/error.png"
+    },
+    {
+      "pathOnDisk": "art/nested.png",
+      "targetPath": "art/nested.png"
+    },
+    {
+      "pathOnDisk": "art/sync.png",
+      "targetPath": "art/sync.png"
     }
   ],
   "overview": "README.md",

@@ -28,8 +28,16 @@ Full syntax highlighting support for `.toon` files that follows the official TOO
 ### Code Generator
 Automatically generate `.toon` files from your JSON files using the built-in Custom Tool. Simply set the Custom Tool property of a `.json` file to `ToonGenerator`, and Visual Studio will automatically create and maintain a corresponding `.toon` file. Just right-click and hit the command **Synchronize to TOON file**.
 
+![Sync](art/sync.png)
+
+This will nest the generated `.toon` file under the source JSON file in Solution Explorer for easy access.
+
+![Nested](art/nested.png)
+
 ### Error Detection
 Real-time syntax validation with inline error messages and warnings displayed in the Error List window. Hover over any error to see detailed information about what went wrong.
+
+![Error](art/error.png)
 
 ### Editor Features
 - Line numbers

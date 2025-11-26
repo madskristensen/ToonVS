@@ -66,9 +66,8 @@ namespace ToonVS
             // find all tokens in the _document and create tags for them and add to list
             foreach (Token token in _document.Result.Tokens)
             {
-                var supportsOutlining = false;
                 SnapshotSpan span = new(Buffer.CurrentSnapshot, token.ToSpan());
-                TokenTag tag = CreateToken(token.Type, false, supportsOutlining, null);
+                TokenTag tag = CreateToken(token.Type, true, false, null);
                 list.Add(new TagSpan<TokenTag>(span, tag));
             }
         }

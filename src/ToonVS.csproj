@@ -53,6 +53,7 @@
     <Compile Include="Editor\LanguageFactory.cs" />
     <Compile Include="Editor\TokenTagger.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Options\General.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\ToggleCustomToolCommand.cs" />
     <Compile Include="Generators\ToonGenerator.cs" />

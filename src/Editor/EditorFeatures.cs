@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
 using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text.BraceCompletion;
+using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 using ToonTokenizer;
@@ -89,27 +90,26 @@ namespace ToonVS
     public class SameWordHighlighter : SameWordHighlighterBase
     { }
 
-    //[Export(typeof(IWpfTextViewCreationListener))]
-    //[ContentType(Constants.LanguageName)]
-    //[TextViewRole(PredefinedTextViewRoles.PrimaryDocument)]
-    //public class UserRatings : WpfTextViewCreationListener
-    //{
-    //    private DateTime _openedDate;
-    //    private RatingPrompt _rating;
+    [Export(typeof(IWpfTextViewCreationListener))]
+    [ContentType(Constants.LanguageName)]
+    [TextViewRole(PredefinedTextViewRoles.PrimaryDocument)]
+    public class UserRatings : WpfTextViewCreationListener
+    {
+        private DateTime _openedDate;
+        private static readonly RatingPrompt _rating = new(Constants.MarketplaceId, Vsix.Name, General.Instance, 5);
 
-    //    protected override void Created(DocumentView docView)
-    //    {
-    //        _openedDate = DateTime.Now;
-    //        _rating = new RatingPrompt(Constants.MarketplaceId, Vsix.Name, AdvancedOptions.Instance, 5);
-    //    }
+        protected override void Created(DocumentView docView)
+        {
+            _openedDate = DateTime.Now;
+        }
 
-    //    protected override void Closed(IWpfTextView textView)
-    //    {
-    //        if (_openedDate.AddMinutes(2) < DateTime.Now)
-    //        {
-    //            _rating.RegisterSuccessfulUsage();
-    //        }
-    //    }
-    //}
+        protected override void Closed(IWpfTextView textView)
+        {
+            if (_openedDate.AddMinutes(2) < DateTime.Now)
+            {
+                _rating.RegisterSuccessfulUsage();
+            }
+        }
+    }
 }
 
