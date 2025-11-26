@@ -16,6 +16,8 @@ A Visual Studio extension that provides comprehensive support for `.toon` files,
 
 ![Screenshot](art/colorizer.png)
 
+Uses the [Toon Tokenizer NuGet package](https://www.nuget.org/packages/ToonTokenizer)
+
 ## What is TOON?
 
 TOON is a tokenized encoding format for JSON that reduces file size while maintaining readability. It's particularly useful for configuration files, data interchange, and scenarios where you want to minimize JSON file size without sacrificing human readability.

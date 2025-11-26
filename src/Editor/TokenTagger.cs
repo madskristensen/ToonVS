@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Text.Adornments;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 using ToonTokenizer;
+using ToonTokenizer.Ast;
 
 namespace ToonVS
 {
@@ -66,6 +67,16 @@ namespace ToonVS
             // find all tokens in the _document and create tags for them and add to list
             foreach (Token token in _document.Result.Tokens)
             {
+                if (token.GetPropertyNode(_document.Result.Document) is PropertyNode property)
+                {
+                    if (property.StartLine < property.EndLine)
+                    {
+                        SnapshotSpan propSpan = new(Buffer.CurrentSnapshot, property.ToSpan());
+                        TokenTag propTag = CreateToken(TokenType.Whitespace, true, true, null);
+                        list.Add(new TagSpan<TokenTag>(propSpan, propTag));
+                    }
+                }
+
                 SnapshotSpan span = new(Buffer.CurrentSnapshot, token.ToSpan());
                 TokenTag tag = CreateToken(token.Type, true, false, null);
                 list.Add(new TagSpan<TokenTag>(span, tag));
@@ -115,6 +126,18 @@ namespace ToonVS
             }
 
             return Task.FromResult<object>(null);
+        }
+
+        public override string GetOutliningText(string text)
+        {
+            var colon = text.IndexOf(':');
+
+            if (colon > 1)
+            {
+                return text.Substring(0, colon);
+            }
+
+            return base.GetOutliningText(text);
         }
 
         public void Dispose()
