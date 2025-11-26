@@ -13,10 +13,10 @@ namespace ToonVS
     /// </summary>
     internal sealed partial class PackageGuids
     {
-        public const string EditorFactoryString = "d89bf4d1-d10a-45dc-aa83-edc7c70b37ba";
+        public const string EditorFactoryString = "43c1a760-5e18-4010-bf0c-6f7e333b5e04";
         public static Guid EditorFactory = new Guid(EditorFactoryString);
 
-        public const string ToonEditorString = "b096eacb-222a-4345-b21e-0d0bcd529f0a";
+        public const string ToonEditorString = "4984d538-4f16-419d-bfb7-9f944effd07b";
         public static Guid ToonEditor = new Guid(ToonEditorString);
 
         public const string JsonFileUIContextString = "3a1289f6-784f-42d1-b0ce-97bce72d969f";

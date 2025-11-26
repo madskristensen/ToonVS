@@ -21,8 +21,8 @@
   </Commands>
 
   <Symbols>
-    <GuidSymbol name="EditorFactory" value="{d89bf4d1-d10a-45dc-aa83-edc7c70b37ba}" />
-    <GuidSymbol name="ToonEditor" value="{b096eacb-222a-4345-b21e-0d0bcd529f0a}" />
+    <GuidSymbol name="EditorFactory" value="{43c1a760-5e18-4010-bf0c-6f7e333b5e04}" />
+    <GuidSymbol name="ToonEditor" value="{4984d538-4f16-419d-bfb7-9f944effd07b}" />
     <GuidSymbol name="JsonFileUIContext" value="{3a1289f6-784f-42d1-b0ce-97bce72d969f}" />
 
     <GuidSymbol name="ToonVS" value="{5feb63ae-63f8-4607-9178-6abea2125652}">

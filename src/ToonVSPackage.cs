@@ -15,12 +15,12 @@ namespace ToonVS
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(PackageGuids.ToonVSString)]
 
-    [ProvideLanguageService(typeof(LanguageFactory), Constants.LanguageName, 0, ShowHotURLs = false, DefaultToNonHotURLs = true, EnableLineNumbers = true, EnableAsyncCompletion = true, ShowCompletion = true, ShowDropDownOptions = true)]
-    [ProvideLanguageExtension(typeof(LanguageFactory), Constants.FileExtension)]
+    [ProvideLanguageService(typeof(ToonLanguage), Constants.LanguageName, 0, ShowHotURLs = false, DefaultToNonHotURLs = true, EnableLineNumbers = true, EnableAsyncCompletion = true, ShowCompletion = false, ShowDropDownOptions = true, MatchBraces = true, MatchBracesAtCaret = true)]
+    [ProvideLanguageExtension(typeof(ToonLanguage), Constants.FileExtension)]
 
-    [ProvideEditorFactory(typeof(LanguageFactory), 214, false, CommonPhysicalViewAttributes = (int)__VSPHYSICALVIEWATTRIBUTES.PVA_SupportsPreview, TrustLevel = __VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted)]
-    [ProvideEditorLogicalView(typeof(LanguageFactory), VSConstants.LOGVIEWID.TextView_string, IsTrusted = true)]
-    [ProvideEditorExtension(typeof(LanguageFactory), Constants.FileExtension, 65536, NameResourceID = 214)]
+    [ProvideEditorFactory(typeof(ToonLanguage), 0, false, CommonPhysicalViewAttributes = (int)__VSPHYSICALVIEWATTRIBUTES.PVA_SupportsPreview, TrustLevel = __VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted)]
+    [ProvideEditorLogicalView(typeof(ToonLanguage), VSConstants.LOGVIEWID.TextView_string, IsTrusted = true)]
+    [ProvideEditorExtension(typeof(ToonLanguage), Constants.FileExtension, 1000)]
 
     [ProvideCodeGenerator(typeof(ToonGenerator), ToonGenerator.Name, ToonGenerator.Description, true, RegisterCodeBase = true)]
     [ProvideFileIcon(Constants.FileExtension, "KnownMonikers.Script")]

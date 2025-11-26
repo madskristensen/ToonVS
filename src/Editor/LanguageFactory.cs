@@ -6,16 +6,13 @@ namespace ToonVS
 {
     [ComVisible(true)]
     [Guid(PackageGuids.EditorFactoryString)]
-    internal sealed class LanguageFactory : LanguageBase
+    internal sealed class ToonLanguage(object site) : LanguageBase(site)
     {
         private DropdownBars _dropdownBars;
 
-        public LanguageFactory(object site) : base(site)
-        { }
-
         public override string Name => Constants.LanguageName;
 
-        public override string[] FileExtensions { get; } = new[] { Constants.FileExtension };
+        public override string[] FileExtensions { get; } = [Constants.FileExtension];
 
         public override void SetDefaultPreferences(LanguagePreferences preferences)
         {

@@ -20,15 +20,45 @@ Uses the [Toon Tokenizer NuGet package](https://www.nuget.org/packages/ToonToken
 
 ## What is TOON?
 
-TOON is a tokenized encoding format for JSON that reduces file size while maintaining readability. It's particularly useful for configuration files, data interchange, and scenarios where you want to minimize JSON file size without sacrificing human readability.
+TOON (Token-Oriented Object Notation) is a line-oriented, indentation-based format that encodes JSON data with explicit structure and minimal quoting. It's designed to be:
+
+- **More compact than JSON** - Especially for arrays of uniform objects (no repeated keys)
+- **LLM-optimized** - Reduces token count for prompts and AI interactions (up to 60% fewer tokens)
+- **Human-readable** - Structured like YAML but with deterministic formatting
+- **Lossless** - Perfectly round-trips to and from JSON
+
+Perfect for LLM prompts, configuration files, and data interchange where token efficiency and readability matter.
+
+### Example: JSON vs TOON
+
+**JSON** (verbose, repeated keys):
+```json
+{
+  "users": [
+    {"id": 1, "name": "Alice", "role": "admin"},
+    {"id": 2, "name": "Bob", "role": "user"},
+    {"id": 3, "name": "Charlie", "role": "user"}
+  ]
+}
+```
+
+**TOON** (compact, tabular format):
+```toon
+users[3]{id,name,role}:
+  1,Alice,admin
+  2,Bob,user
+  3,Charlie,user
+```
+
+The TOON format eliminates repeated keys in arrays, making it ideal for structured data with uniform objects.
 
 ## Features
 
 ### Syntax Highlighting
-Full syntax highlighting support for `.toon` files that follows the official TOON specification, making it easy to read and edit tokenized JSON files directly in Visual Studio.
+Full syntax highlighting support for `.toon` files that follows the official TOON specification, making it easy to read and edit TOON files directly in Visual Studio. Colors distinguish between property names, values, array definitions, and structural elements.
 
-### Code Generator
-Automatically generate `.toon` files from your JSON files using the built-in Custom Tool. Simply set the Custom Tool property of a `.json` file to `ToonGenerator`, and Visual Studio will automatically create and maintain a corresponding `.toon` file. Just right-click and hit the command **Synchronize to TOON file**.
+### JSON to TOON Generator
+Automatically encode your JSON files to compact TOON format using the built-in Custom Tool. Simply set the Custom Tool property of a `.json` file to `ToonGenerator`, and Visual Studio will automatically create and maintain a corresponding `.toon` file. Just right-click and hit the command **Synchronize to TOON file**.
 
 ![Sync](art/sync.png)
 
@@ -59,12 +89,25 @@ Simply open any `.toon` file in Visual Studio, and the extension will automatica
 3. Set the **Custom Tool** property to `ToonGenerator`
 4. Save the file
 
-Visual Studio will automatically generate a `.toon` file nested under your JSON file and keep it synchronized whenever you modify the source JSON.
+Visual Studio will automatically encode your JSON to TOON format and nest the generated `.toon` file under your source JSON file. The file stays synchronized whenever you modify the source JSON.
+
+### Use Cases
+
+- **LLM Prompts**: Reduce token count when sending structured data to AI models
+- **Configuration Files**: More readable than JSON, more structured than YAML
+- **Data Interchange**: Compact format that maintains full JSON compatibility
+- **API Responses**: Minimize bandwidth while keeping data human-readable
 
 ## Requirements
 
 - Visual Studio 2022 (17.0 or later)
 - Supports both x64 and ARM64 architectures
+
+## Learn More
+
+- [TOON Specification](https://github.com/toon-format/spec) - Official format specification
+- [ToonTokenizer NuGet Package](https://www.nuget.org/packages/ToonTokenizer) - The .NET library powering this extension
+- [Reference Implementation](https://github.com/toon-format/toon) - TypeScript reference implementation
 
 
 ## How can I help?

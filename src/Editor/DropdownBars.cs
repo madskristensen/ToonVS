@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.Package;
@@ -31,10 +32,10 @@ namespace ToonVS
         {
             return ThreadHelper.JoinableTaskFactory.StartOnIdle(() =>
             {
-                textView.SendExplicitFocus();
-                _textView.Caret.MoveToNextCaretPosition();
+                _ = textView.SendExplicitFocus();
+                _ = _textView.Caret.MoveToNextCaretPosition();
                 _textView.Caret.PositionChanged += CaretPositionChanged;
-                _textView.Caret.MoveToPreviousCaretPosition();
+                _ = _textView.Caret.MoveToPreviousCaretPosition();
             }).Task;
         }
 
@@ -52,10 +53,7 @@ namespace ToonVS
                 return;
             }
 
-            _ = ThreadHelper.JoinableTaskFactory.StartOnIdle(() =>
-            {
-                _languageService.SynchronizeDropdowns();
-            }, VsTaskRunContext.UIThreadIdlePriority);
+            _ = ThreadHelper.JoinableTaskFactory.StartOnIdle(_languageService.SynchronizeDropdowns, VsTaskRunContext.UIThreadIdlePriority);
         }
 
         public override bool OnSynchronizeDropdowns(LanguageService languageService, IVsTextView textView, int line, int col, ArrayList dropDownTypes, ArrayList dropDownMembers, ref int selectedType, ref int selectedMember)
@@ -64,11 +62,11 @@ namespace ToonVS
             {
                 dropDownMembers.Clear();
 
-                var tables = _document.Result.Document.Properties;
+                List<PropertyNode> tables = _document.Result.Document.Properties;
                 tables.Insert(0, new PropertyNode() { Key = "Document" });
 
                 tables
-                    .Select(headingBlock => CreateDropDownMember(headingBlock, textView))
+                    .Select(CreateDropDownMember)
                     .ToList()
                     .ForEach(ddm => dropDownMembers.Add(ddm));
             }
@@ -77,8 +75,8 @@ namespace ToonVS
             {
                 var thisExt = $"{Vsix.Name} ({Vsix.Version})";
                 var markdig = Path.GetFileName($"   Powered by Toon Tokenizer");
-                dropDownTypes.Add(new DropDownMember(thisExt, new TextSpan(), 126, DROPDOWNFONTATTR.FONTATTR_GRAY));
-                dropDownTypes.Add(new DropDownMember(markdig, new TextSpan(), 126, DROPDOWNFONTATTR.FONTATTR_GRAY));
+                _ = dropDownTypes.Add(new DropDownMember(thisExt, new TextSpan(), 126, DROPDOWNFONTATTR.FONTATTR_GRAY));
+                _ = dropDownTypes.Add(new DropDownMember(markdig, new TextSpan(), 126, DROPDOWNFONTATTR.FONTATTR_GRAY));
             }
 
             DropDownMember currentDropDown = dropDownMembers
@@ -93,9 +91,9 @@ namespace ToonVS
             return true;
         }
 
-        private static DropDownMember CreateDropDownMember(PropertyNode property, IVsTextView textView)
+        private static DropDownMember CreateDropDownMember(PropertyNode property)
         {
-            TextSpan textSpan = GetTextSpan(property, textView);
+            TextSpan textSpan = GetTextSpan(property);
             var headingText = GetTableName(property, out DROPDOWNFONTATTR format);
 
             return new DropDownMember(headingText, textSpan, 126, format);
@@ -108,7 +106,7 @@ namespace ToonVS
             return property.Key;
         }
 
-        private static TextSpan GetTextSpan(PropertyNode property, IVsTextView textView)
+        private static TextSpan GetTextSpan(PropertyNode property)
         {
             TextSpan textSpan = new()
             {
