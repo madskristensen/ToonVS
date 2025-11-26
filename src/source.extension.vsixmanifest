@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="ToonVS.a857d5f5-e2b1-485e-932b-893dbfaf3661" Version="1.0.907" Language="en-US" Publisher="Mads Kristensen" />
+        <Identity Id="ToonVS.a857d5f5-e2b1-485e-932b-893dbfaf3661" Version="1.0.908" Language="en-US" Publisher="Mads Kristensen" />
         <DisplayName>Toon</DisplayName>
         <Description xml:space="preserve">A Visual Studio extension that provides comprehensive support for .toon files, including syntax highlighting, error detection, and code generation from JSON files.</Description>
         <MoreInfo>https://github.com/madskristensen/ToonVS</MoreInfo>

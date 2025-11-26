@@ -8,7 +8,10 @@ namespace ToonVS
     public class Document : IDisposable
     {
         private readonly ITextBuffer _buffer;
+        private readonly object _lockObject = new();
         private bool _isDisposed;
+        private volatile bool _isParsing;
+        private ToonParseResult _result;
 
         public Document(ITextBuffer buffer)
         {
@@ -21,9 +24,25 @@ namespace ToonVS
 
         public string FileName { get; }
 
-        public bool IsParsing { get; private set; }
+        public bool IsParsing => _isParsing;
 
-        public ToonParseResult Result { get; private set; }
+        public ToonParseResult Result
+        {
+            get
+            {
+                lock (_lockObject)
+                {
+                    return _result;
+                }
+            }
+            private set
+            {
+                lock (_lockObject)
+                {
+                    _result = value;
+                }
+            }
+        }
 
         private void OnBufferChanged(object sender, TextContentChangedEventArgs e)
         {
@@ -32,7 +51,12 @@ namespace ToonVS
 
         private async Task ParseAsync()
         {
-            IsParsing = true;
+            if (_isParsing)
+            {
+                return;
+            }
+
+            _isParsing = true;
             var success = false;
 
             try
@@ -50,7 +74,7 @@ namespace ToonVS
             }
             finally
             {
-                IsParsing = false;
+                _isParsing = false;
 
                 if (success)
                 {
@@ -62,13 +86,18 @@ namespace ToonVS
 
         public void Dispose()
         {
-            if (!_isDisposed)
+            // Ensure disposal logic is only executed once, and mark as disposed as early as possible
+            lock (_lockObject)
             {
-                _buffer.Changed -= OnBufferChanged;
-                Result = null;
-            }
+                if (_isDisposed)
+                {
+                    return;
+                }
 
-            _isDisposed = true;
+                _isDisposed = true;
+                _buffer.Changed -= OnBufferChanged;
+                _result = null;
+            }
         }
 
         public event Action<Document> Parsed;

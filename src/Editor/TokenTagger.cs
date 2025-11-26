@@ -102,7 +102,7 @@ namespace ToonVS
             foreach (ToonError error in _document.Result.Errors)
             {
                 ITagSpan<TokenTag> span =
-                    list.FirstOrDefault(s => s.Span.Start <= error.Position - 1 && s.Span.End >= error.EndPosition - 1) ??
+                    list.FirstOrDefault(s => !Equals(s.Tag.TokenType, TokenType.Whitespace) && s.Span.Start <= error.Position - 1 && s.Span.End >= error.EndPosition - 1) ??
                     list.FirstOrDefault(s => s.Span.Start.GetContainingLineNumber() == error.Line - 1);
 
                 if (span == null)
@@ -120,6 +120,7 @@ namespace ToonVS
                     Line = error.Line - 1,
                     Column = error.Column,
                     BuildTool = Vsix.Name,
+                    ErrorCode = error.Code
                 }];
             }
         }

@@ -22,10 +22,14 @@ namespace ToonVS
                 var code = ToonTokenizer.Toon.Encode(inputFileContent);
                 return Encoding.UTF8.GetBytes(code);
             }
-            catch
+            catch (Exception ex)
             {
-                VS.StatusBar.ShowMessageAsync("ToonGenerator: Failed to generate code. Please check the input file for errors.").FireAndForget();
-                return null;
+                var message = $"ToonGenerator: Failed to generate code from {inputFileName}. Error: {ex.Message}";
+
+                VS.StatusBar.ShowMessageAsync(message).FireAndForget();
+
+                var errorOutput = $"// Error generating TOON: {ex.Message}\n// Please check the input JSON file for errors.";
+                return Encoding.UTF8.GetBytes(errorOutput);
             }
         }
     }

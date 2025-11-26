@@ -12,7 +12,7 @@ namespace ToonVS
         public const string Name = "Toon";
         public const string Description = @"A Visual Studio extension that provides comprehensive support for .toon files, including syntax highlighting, error detection, and code generation from JSON files.";
         public const string Language = "en-US";
-        public const string Version = "1.0.907";
+        public const string Version = "1.0.908";
         public const string Author = "Mads Kristensen";
         public const string Tags = "toon, json, jsonc, copilot, ai, tokens";
         public const bool IsPreview = false;

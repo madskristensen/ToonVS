@@ -1,6 +1,6 @@
 namespace ToonVS
 {
-    public class Constants
+    public static class Constants
     {
         public const string LanguageName = "TOON";
         public const string FileExtension = ".toon";
