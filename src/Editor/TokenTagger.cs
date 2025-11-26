@@ -64,6 +64,8 @@ namespace ToonVS
 
         private void TagAll(List<ITagSpan<TokenTag>> list)
         {
+            ITextSnapshot snapshot = Buffer.CurrentSnapshot;
+
             // find all tokens in the _document and create tags for them and add to list
             foreach (Token token in _document.Result.Tokens)
             {
@@ -71,15 +73,27 @@ namespace ToonVS
                 {
                     if (property.StartLine < property.EndLine)
                     {
-                        SnapshotSpan propSpan = new(Buffer.CurrentSnapshot, property.ToSpan());
-                        TokenTag propTag = CreateToken(TokenType.Whitespace, true, true, null);
-                        list.Add(new TagSpan<TokenTag>(propSpan, propTag));
+                        var propSpanData = property.ToSpan();
+
+                        // Validate span is within snapshot bounds
+                        if (propSpanData.End <= snapshot.Length)
+                        {
+                            SnapshotSpan propSpan = new(snapshot, propSpanData);
+                            TokenTag propTag = CreateToken(TokenType.Whitespace, true, true, null);
+                            list.Add(new TagSpan<TokenTag>(propSpan, propTag));
+                        }
                     }
                 }
 
-                SnapshotSpan span = new(Buffer.CurrentSnapshot, token.ToSpan());
-                TokenTag tag = CreateToken(token.Type, true, false, null);
-                list.Add(new TagSpan<TokenTag>(span, tag));
+                var tokenSpanData = token.ToSpan();
+
+                // Validate span is within snapshot bounds
+                if (tokenSpanData.End <= snapshot.Length)
+                {
+                    SnapshotSpan span = new(snapshot, tokenSpanData);
+                    TokenTag tag = CreateToken(token.Type, true, false, null);
+                    list.Add(new TagSpan<TokenTag>(span, tag));
+                }
             }
         }
 
@@ -132,12 +146,7 @@ namespace ToonVS
         {
             var colon = text.IndexOf(':');
 
-            if (colon > 1)
-            {
-                return text.Substring(0, colon);
-            }
-
-            return base.GetOutliningText(text);
+            return colon > 1 ? text.Substring(0, colon) : base.GetOutliningText(text);
         }
 
         public void Dispose()

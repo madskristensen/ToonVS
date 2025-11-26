@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Text.Editor;
@@ -63,20 +62,19 @@ namespace ToonVS
                 dropDownMembers.Clear();
 
                 List<PropertyNode> tables = _document.Result.Document.Properties;
-                tables.Insert(0, new PropertyNode() { Key = "Document" });
 
-                tables
-                    .Select(CreateDropDownMember)
-                    .ToList()
-                    .ForEach(ddm => dropDownMembers.Add(ddm));
+                foreach (PropertyNode property in tables)
+                {
+                    AddPropertyWithChildren(property, textView, dropDownMembers, 0);
+                }
             }
 
             if (dropDownTypes.Count == 0)
             {
                 var thisExt = $"{Vsix.Name} ({Vsix.Version})";
-                var markdig = Path.GetFileName($"   Powered by Toon Tokenizer");
+                var poweredBy = $"   Powered by Toon Tokenizer";
                 _ = dropDownTypes.Add(new DropDownMember(thisExt, new TextSpan(), 126, DROPDOWNFONTATTR.FONTATTR_GRAY));
-                _ = dropDownTypes.Add(new DropDownMember(markdig, new TextSpan(), 126, DROPDOWNFONTATTR.FONTATTR_GRAY));
+                _ = dropDownTypes.Add(new DropDownMember(poweredBy, new TextSpan(), 126, DROPDOWNFONTATTR.FONTATTR_GRAY));
             }
 
             DropDownMember currentDropDown = dropDownMembers
@@ -84,37 +82,74 @@ namespace ToonVS
                 .Where(d => d.Span.iStartLine <= line)
                 .LastOrDefault();
 
-            selectedMember = dropDownMembers.IndexOf(currentDropDown);
+            selectedMember = currentDropDown != null ? dropDownMembers.IndexOf(currentDropDown) : dropDownMembers.Count > 0 ? 0 : -1;
             selectedType = 0;
             _hasBufferChanged = false;
 
             return true;
         }
 
-        private static DropDownMember CreateDropDownMember(PropertyNode property)
+
+        /// <summary>
+        /// Recursively adds a <see cref="PropertyNode"/> and its child properties to the dropdown members list,
+        /// building a hierarchical structure for the dropdown bar.
+        /// </summary>
+        /// <param name="property">The property node to add to the dropdown.</param>
+        /// <param name="textView">The text view used to determine the span of the property.</param>
+        /// <param name="dropDownMembers">The list to which dropdown members are added.</param>
+        /// <param name="depth">The current depth in the property hierarchy, used for indentation and formatting.</param>
+        /// <remarks>
+        /// This method is recursive: for each property that contains child properties (i.e., its value is an <see cref="ObjectNode"/>),
+        /// it calls itself for each child, incrementing the depth to reflect the hierarchy.
+        /// </remarks>
+
+        private static void AddPropertyWithChildren(PropertyNode property, IVsTextView textView, ArrayList dropDownMembers, int depth)
         {
-            TextSpan textSpan = GetTextSpan(property);
-            var headingText = GetTableName(property, out DROPDOWNFONTATTR format);
+            DropDownMember member = CreateDropDownMember(property, textView, depth);
+            _ = dropDownMembers.Add(member);
+
+            if (property.Value is ObjectNode objectNode && objectNode.Properties != null)
+            {
+                foreach (PropertyNode childProperty in objectNode.Properties)
+                {
+                    if (childProperty.Value is ObjectNode)
+                    {
+                        AddPropertyWithChildren(childProperty, textView, dropDownMembers, depth + 1);
+                    }
+                }
+            }
+        }
+
+        private static DropDownMember CreateDropDownMember(PropertyNode property, IVsTextView textView, int depth)
+        {
+            TextSpan textSpan = GetTextSpan(property, textView);
+            var headingText = GetTableName(property, depth, out DROPDOWNFONTATTR format);
 
             return new DropDownMember(headingText, textSpan, 126, format);
         }
 
-        private static string GetTableName(PropertyNode property, out DROPDOWNFONTATTR format)
+        private static string GetTableName(PropertyNode property, int depth, out DROPDOWNFONTATTR format)
         {
-            format = DROPDOWNFONTATTR.FONTATTR_PLAIN;
+            format = depth == 0 ? DROPDOWNFONTATTR.FONTATTR_BOLD : DROPDOWNFONTATTR.FONTATTR_PLAIN;
 
-            return property.Key;
+            var indent = new string(' ', depth * 2);
+            return indent + property.Key;
         }
 
-        private static TextSpan GetTextSpan(PropertyNode property)
+        private static TextSpan GetTextSpan(PropertyNode property, IVsTextView textView)
         {
-            TextSpan textSpan = new()
+            TextSpan textSpan = new();
+
+            // Check HRESULTs to ensure positions are valid
+            var hrStart = textView.GetLineAndColumn(property.StartPosition, out textSpan.iStartLine, out textSpan.iStartIndex);
+            var hrEnd = textView.GetLineAndColumn(property.EndPosition + 1, out textSpan.iEndLine, out textSpan.iEndIndex);
+
+            if (hrStart != 0 || hrEnd != 0)
             {
-                iStartIndex = property.StartPosition,
-                iEndIndex = property.EndPosition + 1,
-                iStartLine = property.StartLine,
-                iEndLine = property.EndLine
-            };
+                // Return a default TextSpan if either call fails
+                return new TextSpan();
+            }
+
 
             return textSpan;
         }
