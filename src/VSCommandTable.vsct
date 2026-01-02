@@ -12,6 +12,8 @@
         <Parent guid="VSMainMenu" id="Node.IncludeExcludeGroup" />
         <Icon guid="ImageCatalogGuid" id="GenerateFile" />
         <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <ButtonText>Synchronize to Toon file</ButtonText>
           <CanonicalName>.ToonVS.SyncToToonFile</CanonicalName>
@@ -19,6 +21,11 @@
       </Button>
     </Buttons>
   </Commands>
+
+  <VisibilityConstraints>
+    <VisibilityItem guid="ToonVS" id="ToggleCustomToolCommand" context="JsonFileUIContext">
+    </VisibilityItem>
+  </VisibilityConstraints>
 
   <Symbols>
     <GuidSymbol name="EditorFactory" value="{43c1a760-5e18-4010-bf0c-6f7e333b5e04}" />
