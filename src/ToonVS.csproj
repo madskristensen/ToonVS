@@ -107,7 +107,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="ToonTokenizer">
-      <Version>1.0.0.35</Version>
+      <Version>1.0.0.38</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />
