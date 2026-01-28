@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Package;
+using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace ToonVS
@@ -9,6 +10,30 @@ namespace ToonVS
     internal sealed class ToonLanguage(object site) : LanguageBase(site)
     {
         private DropdownBars _dropdownBars;
+
+        /// <summary>
+        /// Creates a custom CodeWindowManager that implements IVsDocOutlineProvider
+        /// to provide document outline support for the Document Outline tool window.
+        /// </summary>
+        public override CodeWindowManager CreateCodeWindowManager(IVsCodeWindow codeWindow, Source source)
+        {
+            // Get the IWpfTextView and Document from the code window
+            if (codeWindow.GetPrimaryView(out IVsTextView vsTextView) == Microsoft.VisualStudio.VSConstants.S_OK)
+            {
+                IWpfTextView textView = vsTextView.ToIWpfTextView();
+                if (textView != null)
+                {
+                    Document document = textView.TextBuffer.GetDocument();
+                    if (document != null)
+                    {
+                        return new ToonCodeWindowManager(this, codeWindow, source, textView, document);
+                    }
+                }
+            }
+
+            // Fall back to the default CodeWindowManager if we can't get the required objects
+            return base.CreateCodeWindowManager(codeWindow, source);
+        }
 
         public override string Name => Constants.LanguageName;
 

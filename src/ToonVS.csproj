@@ -4,6 +4,11 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <Page Include="Editor\DocumentOutlineControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -48,10 +53,14 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Document.cs" />
+    <Compile Include="Editor\DocumentOutlineControl.xaml.cs">
+      <DependentUpon>DocumentOutlineControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Editor\DropdownBars.cs" />
     <Compile Include="Editor\EditorFeatures.cs" />
     <Compile Include="Editor\LanguageFactory.cs" />
     <Compile Include="Editor\TokenTagger.cs" />
+    <Compile Include="Editor\ToonCodeWindowManager.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Options\General.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,6 +104,13 @@
     <Reference Include="System" />
     <Reference Include="System.Design" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Community.VisualStudio.VSCT" Version="16.0.29.6" PrivateAssets="all" />
@@ -110,7 +126,6 @@
       <Version>1.0.0.38</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <GetVsixSourceItemsDependsOn>$(GetVsixSourceItemsDependsOn);IncludeNuGetResolvedAssets</GetVsixSourceItemsDependsOn>
   </PropertyGroup>
