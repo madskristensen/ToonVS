@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using ToonTokenizer.Ast;
@@ -24,7 +23,7 @@ namespace ToonVS
         private IVsTextView _vsTextView;
         private bool _isNavigating;
 
-        public ObservableCollection<OutlineItem> Items { get; } = new ObservableCollection<OutlineItem>();
+        public ObservableCollection<OutlineItem> Items { get; } = [];
 
         public DocumentOutlineControl()
         {
@@ -104,7 +103,7 @@ namespace ToonVS
             }
 
             // Find and select the item that contains the current caret position
-            int caretPosition = e.NewPosition.BufferPosition.Position;
+            var caretPosition = e.NewPosition.BufferPosition.Position;
             SelectItemAtPosition(caretPosition);
         }
 
@@ -175,7 +174,7 @@ namespace ToonVS
 
         private OutlineItem CreateOutlineItem(PropertyNode property, int depth)
         {
-            bool hasChildren = property.Value is ObjectNode objectNode && objectNode.Properties != null && objectNode.Properties.Count > 0;
+            var hasChildren = property.Value is ObjectNode objectNode && objectNode.Properties != null && objectNode.Properties.Count > 0;
 
             var item = new OutlineItem
             {
@@ -183,8 +182,7 @@ namespace ToonVS
                 Depth = depth,
                 StartPosition = property.StartPosition,
                 EndPosition = property.EndPosition,
-                FontWeight = depth == 0 ? FontWeights.Bold : FontWeights.Normal,
-                IconMoniker = hasChildren ? KnownMonikers.Namespace : KnownMonikers.Property
+                IconMoniker = hasChildren ? KnownMonikers.Class : KnownMonikers.Field
             };
 
             // Add children if the property value is an ObjectNode
@@ -213,7 +211,7 @@ namespace ToonVS
             try
             {
                 // Get line and column from position
-                _vsTextView.GetLineAndColumn(item.StartPosition, out int line, out int column);
+                _vsTextView.GetLineAndColumn(item.StartPosition, out var line, out var column);
 
                 // Navigate to the item line
                 _vsTextView.SetCaretPos(line, column);
@@ -289,7 +287,7 @@ namespace ToonVS
             }
 
             // Search through all items recursively
-            foreach (object containerItem in container.Items)
+            foreach (var containerItem in container.Items)
             {
                 if (container.ItemContainerGenerator.ContainerFromItem(containerItem) is TreeViewItem childContainer)
                 {
@@ -315,8 +313,7 @@ namespace ToonVS
         public int Depth { get; set; }
         public int StartPosition { get; set; }
         public int EndPosition { get; set; }
-        public FontWeight FontWeight { get; set; }
         public ImageMoniker IconMoniker { get; set; }
-        public ObservableCollection<OutlineItem> Children { get; } = new ObservableCollection<OutlineItem>();
+        public ObservableCollection<OutlineItem> Children { get; } = [];
     }
 }
